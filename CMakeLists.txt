@@ -3,19 +3,19 @@ cmake_minimum_required(VERSION 3.25)
 # Tell cmake we have files in the /cmake folder
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
-include (PamplejuceVersion)
-include (CPM)
+include(PamplejuceVersion)
+include(CPM)
 include(PamplejuceMacOS)
 include(JUCEDefaults)
 
 # project name cannot have spaces, but product can
-set(PROJECT_NAME "TheGrimlockStrategies")
-set(PRODUCT_NAME "The Grimlock Strategies")
+set(PROJECT_NAME "SlopeOverload")
+set(PRODUCT_NAME "Slope Overload")
 
 set(COMPANY_NAME "Icebreaker Audio")
 
 # Used for the MacOS bundle identifier (and signing)
-set(BUNDLE_ID "com.icebreakeraudio.grimlockstrats")
+set(BUNDLE_ID "com.icebreakeraudio.slopeoverload")
 
 # Options: AAX Unity VST VST3 AU AUv3 Standalone
 set(FORMATS Standalone AU VST3)
@@ -49,7 +49,7 @@ juce_add_plugin("${PROJECT_NAME}"
     PLUGIN_MANUFACTURER_CODE IceB
 
     # A unique four-character plugin id. This must have at least one upper-case character
-    PLUGIN_CODE IAGS
+    PLUGIN_CODE IASO
 
     FORMATS "${FORMATS}"
 
@@ -99,7 +99,7 @@ target_compile_definitions(SharedCode
     VERSION="${CURRENT_VERSION}"
 
     # JucePlugin_Name is for some reason doesn't use the nicer PRODUCT_NAME
-    PRODUCT_NAME_WITHOUT_VERSION="The Grimlock Strategies"
+    PRODUCT_NAME_WITHOUT_VERSION="Slope Overload"
 )
 
 target_link_libraries(SharedCode
