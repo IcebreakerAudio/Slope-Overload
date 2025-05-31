@@ -70,7 +70,7 @@ add_library(SharedCode INTERFACE)
 
 clap_juce_extensions_plugin(TARGET "${PROJECT_NAME}"
     CLAP_ID "${BUNDLE_ID}"
-    CLAP_FEATURES instrument synthesizer)
+    CLAP_FEATURES audio-effect distortion stereo)
 
 # Enable fast math, C++20 and a few other target defaults
 include(SharedCodeDefaults)
