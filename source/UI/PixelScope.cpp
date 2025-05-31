@@ -55,6 +55,13 @@ void PixelScope::setDataAt(int index, float minValue, float maxValue)
     dataMax[index] = round(maxValue * pixelsYfloat) / pixelsYfloat;
 }
 
+void PixelScope::setSizeRatio(float newSizeRatio)
+{
+    pixelSize = 4.0f * newSizeRatio;
+    background.setPixelSize(pixelSize);
+    background.setPixelOffset(pixelSize * 0.5f);
+}
+
 //==============================================================================
 
 PixelScope::PixelScopeBackground::PixelScopeBackground(int numPixelsX, int numPixelsY, float pixelSize)

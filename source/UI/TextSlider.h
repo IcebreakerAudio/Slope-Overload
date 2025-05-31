@@ -14,12 +14,14 @@ public:
     void setNumDecimalPlaces(int numPlaces);
 
     void setFontHeight(float newHeight);
+    void setShadowOffset(float newOffset);
 
 private:
 
     bool digitalReadout = false;
     int numDecimals = 1;
 
+    float offset = 2.0f;
     float fontHeight = 32.0f;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (TextSlider)

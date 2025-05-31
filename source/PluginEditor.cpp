@@ -29,33 +29,26 @@ AudioPluginAudioProcessorEditor::AudioPluginAudioProcessorEditor (AudioPluginAud
     background = juce::Drawable::createFromImageData(BinaryData::Background_svg, BinaryData::Background_svgSize);
 
     // create labels
-    auto labelFont = juce::Font(juce::FontOptions().withPointHeight(32.0f));
     for(auto& details : labelDetails)
     {
         auto s = labels.emplace_back(std::make_shared<juce::Label>(details.text, details.text));
         addAndMakeVisible(s.get());
-        s->setBounds(details.posX + 2, details.posY + 2, 139, 34);
         s->setJustificationType(details.justification);
-        s->setFont(labelFont);
-        s->setColour(juce::Label::ColourIds::textColourId, juce::Colours::black.withAlpha(0.25f));
+        s->setColour(juce::Label::ColourIds::textColourId, juce::Colours::black.withAlpha(0.125f));
         details.shadow_ptr = s;
 
         auto& l = labels.emplace_back(std::make_shared<juce::Label>(details.text, details.text));
         addAndMakeVisible(l.get());
-        l->setBounds(details.posX, details.posY, 139, 34);
         l->setJustificationType(details.justification);
-        l->setFont(labelFont);
         details.label_ptr = l;
     }
 
     // In and Out Gain
     inGainSlider = std::make_unique<TextSlider>();
-    inGainSlider->setBounds(144 + 60, 82, 139 - 60, 34);
     inGainSlider->setTextValueSuffix("dB");
     addAndMakeVisible(inGainSlider.get());
 
     outGainSlider = std::make_unique<TextSlider>();
-    outGainSlider->setBounds(478 + 60, 82, 139 - 60, 34);
     outGainSlider->setTextValueSuffix("dB");
     addAndMakeVisible(outGainSlider.get());
 
@@ -65,7 +58,6 @@ AudioPluginAudioProcessorEditor::AudioPluginAudioProcessorEditor (AudioPluginAud
     //Sample Rate
     sampleRateSlider = std::make_unique<TextSlider>();
     sampleRateSlider->setUseDigitalReadout(true);
-    sampleRateSlider->setBounds(351, 336, 53, 38);
     addAndMakeVisible(sampleRateSlider.get());
 
     sampleRateAttachment = std::make_unique<juce::SliderParameterAttachment>(*processorRef.apvts.getParameter("sRate"), *sampleRateSlider.get());
@@ -73,14 +65,12 @@ AudioPluginAudioProcessorEditor::AudioPluginAudioProcessorEditor (AudioPluginAud
     // Filter On/Off
     filterOnOff = std::make_unique<RadioButtonComponent>(juce::StringArray("OFF", "ON"));
     filterOnOff->addDivider("/");
-    filterOnOff->setBounds(137, 339, 152, 34);
     addAndMakeVisible(filterOnOff.get());
 
     filterAttachment = std::make_unique<RadioButtonAttachment>(*processorRef.apvts.getParameter("aaFilt"), *filterOnOff.get());
 
     // Speaker Select
     speakerType = std::make_unique<RadioButtonComponent>(juce::StringArray("A", "B", "C"));
-    speakerType->setBounds(478, 339 - 4, 152, 34 + 4);
     addAndMakeVisible(speakerType.get());
 
     speakerAttachment = std::make_unique<RadioButtonAttachment>(*processorRef.apvts.getParameter("speaker"), *speakerType.get());
@@ -91,7 +81,6 @@ AudioPluginAudioProcessorEditor::AudioPluginAudioProcessorEditor (AudioPluginAud
     powerButton = std::make_unique<juce::DrawableButton>("Power", juce::DrawableButton::ButtonStyle::ImageFitted);
     powerButton->setImages(offImage.get(), nullptr, nullptr, nullptr, onImage.get(), nullptr, nullptr, nullptr);
     powerButton->setClickingTogglesState(true);
-    powerButton->setBounds(40 - 3, 183 - 3, 29 + 6, 29 + 6);
     addAndMakeVisible(powerButton.get());
 
     powerAttachment = std::make_unique<juce::ButtonParameterAttachment>(*processorRef.apvts.getParameter("active"), *powerButton.get());
@@ -99,10 +88,19 @@ AudioPluginAudioProcessorEditor::AudioPluginAudioProcessorEditor (AudioPluginAud
     // scope
     updateScopeDataSize();
     addAndMakeVisible(scope);
-    scope.setBounds(138, 127 + 4, 480, 155);
 
-    //
-    setSize (715, 460);
+    // resizing
+    setResizable(true, true);
+    auto sizeRatio = processorRef.getInterfaceSizeRatio();
+    auto width = originalWidthF * sizeRatio;
+    auto height = originalHeightF * sizeRatio;
+    const auto ratio = static_cast<double>(originalWidthF / originalHeightF);
+    getConstrainer()->setFixedAspectRatio(ratio);
+    setResizeLimits(originalWidth / 2, originalHeight / 2, originalWidth * 2, originalHeight * 2);
+
+    setSize(juce::roundToInt(width), juce::roundToInt(height));
+
+    // timer
     startTimerHz(12);
 }
 
@@ -178,4 +176,77 @@ void AudioPluginAudioProcessorEditor::paint (juce::Graphics& g)
 
 void AudioPluginAudioProcessorEditor::resized()
 {
+    auto bounds = getLocalBounds().toFloat();
+    auto sizeRatio = bounds.getWidth() / originalWidthF;
+
+    processorRef.setInterfaceSizeRatio(sizeRatio);
+
+    const auto shadowDistance = 2.0f * sizeRatio;
+
+    const auto labelFont = juce::Font(juce::FontOptions().withPointHeight(28.0f * sizeRatio));
+    const auto labelHeight = juce::roundToInt(34.0f * sizeRatio);
+    const auto labelWidth = juce::roundToInt(139.0f * sizeRatio);
+
+    for(auto& details : labelDetails)
+    {
+        auto s = details.shadow_ptr.lock();
+        if(s)
+        {
+            s->setBounds(juce::roundToInt((details.posX * sizeRatio) + shadowDistance),
+                         juce::roundToInt((details.posY * sizeRatio) + shadowDistance),
+                         labelWidth, labelHeight);
+            s->setFont(labelFont);
+        }
+
+        auto l = details.label_ptr.lock();
+        if(l)
+        {
+            l->setBounds(juce::roundToInt(details.posX * sizeRatio),
+                         juce::roundToInt(details.posY * sizeRatio),
+                         labelWidth, labelHeight);
+            l->setFont(labelFont);
+        }
+    }
+
+    powerButton->setBounds(juce::roundToInt(36.0f * sizeRatio),
+                           juce::roundToInt(180.0f * sizeRatio),
+                           juce::roundToInt(35.0f * sizeRatio),
+                           juce::roundToInt(35.0f * sizeRatio));
+
+    inGainSlider->setFontHeight(28.0f * sizeRatio);
+    outGainSlider->setFontHeight(28.0f * sizeRatio);
+    inGainSlider->setShadowOffset(shadowDistance);
+    outGainSlider->setShadowOffset(shadowDistance);
+    inGainSlider->setBounds(juce::roundToInt(190.0f * sizeRatio),
+                            juce::roundToInt(82.0f * sizeRatio),
+                            juce::roundToInt(90.0f * sizeRatio),
+                            juce::roundToInt(34.0f * sizeRatio));
+    outGainSlider->setBounds(juce::roundToInt(524.0f * sizeRatio),
+                            juce::roundToInt(82.0f * sizeRatio),
+                            juce::roundToInt(90.0f * sizeRatio),
+                            juce::roundToInt(34.0f * sizeRatio));
+
+    sampleRateSlider->setShadowOffset(shadowDistance);
+    sampleRateSlider->setFontHeight(32.0f * sizeRatio);
+    sampleRateSlider->setBounds(juce::roundToInt(351.0f * sizeRatio),
+                                juce::roundToInt(336.0f * sizeRatio),
+                                juce::roundToInt(53.0f * sizeRatio),
+                                juce::roundToInt(38.0f * sizeRatio));
+
+    filterOnOff->setShadowDistance(shadowDistance);
+    speakerType->setShadowDistance(shadowDistance);
+    filterOnOff->setBounds(juce::roundToInt(137.0f * sizeRatio),
+                           juce::roundToInt(339.0f * sizeRatio),
+                           juce::roundToInt(152.0f * sizeRatio),
+                           juce::roundToInt(34.0f * sizeRatio));
+    speakerType->setBounds(juce::roundToInt(475.0f * sizeRatio),
+                           juce::roundToInt(335.0f * sizeRatio),
+                           juce::roundToInt(155.0f * sizeRatio),
+                           juce::roundToInt(38.0f * sizeRatio));
+
+    scope.setSizeRatio(sizeRatio);
+    scope.setBounds(juce::roundToInt(140.0f * sizeRatio),
+                    juce::roundToInt(131.0f * sizeRatio),
+                    juce::roundToInt(480.0f * sizeRatio),
+                    juce::roundToInt(155.0f * sizeRatio));
 }

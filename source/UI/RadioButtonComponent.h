@@ -19,6 +19,8 @@ public:
     int getSelectedItemIndex() { return selectedItemIndex; }
     int getNumItems() { return numItems; }
 
+    void setShadowDistance(float newDistance);
+
     void addItem(juce::StringRef displayText, juce::StringRef itemTip = "");
     void addDivider(juce::StringRef displayText) { dividerText = displayText; }
 

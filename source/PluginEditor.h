@@ -29,15 +29,19 @@ private:
 
     //==============================================================================
 
-    
+    const int originalWidth = 715;
+    const int originalHeight = 460;
+
+    const float originalWidthF = static_cast<float>(originalWidth);
+    const float originalHeightF = static_cast<float>(originalHeight);
 
     //==============================================================================
 
     struct LabelDetails
     {
         juce::String text;
-        int posX;
-        int posY;
+        float posX;
+        float posY;
         juce::Justification justification;
 
         std::weak_ptr<juce::Label> label_ptr;
@@ -46,11 +50,11 @@ private:
 
     std::array<LabelDetails, 5> labelDetails
     {
-        LabelDetails{"IN:", 144, 82, juce::Justification::centredLeft},
-        LabelDetails{"OUT:", 478, 82, juce::Justification::centredLeft},
-        LabelDetails{"FILTER", 144, 295, juce::Justification::centred},
-        LabelDetails{"S.RATE", 311, 295, juce::Justification::centred},
-        LabelDetails{"SPEAKER", 478, 295, juce::Justification::centred}
+        LabelDetails{"IN:", 144.0f, 82.0f, juce::Justification::centredLeft},
+        LabelDetails{"OUT:", 478.0f, 82.0f, juce::Justification::centredLeft},
+        LabelDetails{"FILTER", 144.0f, 295.0f, juce::Justification::centred},
+        LabelDetails{"S.RATE", 311.0f, 295.0f, juce::Justification::centred},
+        LabelDetails{"SPEAKER", 484.0f, 295.0f, juce::Justification::centred}
     };
 
     //==============================================================================

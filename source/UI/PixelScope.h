@@ -11,6 +11,7 @@ public:
     void resized() override;
 
     void setDataAt(int index, float minValue, float maxValue);
+    void setSizeRatio(float newSizeRatio);
 
     constexpr int getDataSize() { return pixelsX; }
 
@@ -21,6 +22,7 @@ private:
     static constexpr float pixelsYfloat = static_cast<float>(pixelsY);
 
     float pixelSize = 4.0f;
+    float shadowDistance = 2.0f;
 
     std::vector<float> dataMin;
     std::vector<float> dataMax;

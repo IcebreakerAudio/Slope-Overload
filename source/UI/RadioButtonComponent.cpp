@@ -66,6 +66,14 @@ void RadioButtonComponent::resized()
 
 }
 
+void RadioButtonComponent::setShadowDistance(float newDistance)
+{
+    for(auto& i : items)
+    {
+        i->setShadowDistance(newDistance);
+    }
+}
+
 void RadioButtonComponent::setSelectedItemIndex(int itemIndex)
 {
     jassert(juce::isPositiveAndBelow(itemIndex, numItems));

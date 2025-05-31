@@ -10,7 +10,7 @@ void TextSlider::paint (juce::Graphics& g)
 {
     auto val = getValue();
     auto units = getTextValueSuffix();
-    auto bounds = getLocalBounds();
+    auto bounds = getLocalBounds().toFloat();
 
     juce::String bgText;
     auto text = juce::String(val, digitalReadout ? 0 : numDecimals, false);
@@ -38,7 +38,7 @@ void TextSlider::paint (juce::Graphics& g)
     }
 
     g.setColour(getLookAndFeel().findColour(juce::Slider::ColourIds::backgroundColourId));
-    g.drawText(bgText, bounds.withX(2).withY(2), juce::Justification::centredRight, false);
+    g.drawText(bgText, bounds.withX(offset).withY(offset), juce::Justification::centredRight, false);
 
     g.setColour(getLookAndFeel().findColour(juce::Slider::ColourIds::textBoxTextColourId));
     g.drawText(text, bounds, juce::Justification::centredRight, false);
@@ -52,4 +52,14 @@ void TextSlider::setUseDigitalReadout(bool shouldBeDigital)
 void TextSlider::setNumDecimalPlaces(int numPlaces)
 {
     numDecimals = numPlaces;
+}
+
+void TextSlider::setFontHeight(float newHeight)
+{
+    fontHeight = newHeight;
+}
+
+void TextSlider::setShadowOffset(float newOffset)
+{
+    offset = newOffset;
 }

@@ -61,6 +61,9 @@ public:
     int getScopeNumSamplesToRead() { return scopeData.getSizeToRead(); }
     int getScopeSize() { return scopeData.size(); }
 
+    float getInterfaceSizeRatio() { return sizeRatio; }
+    void setInterfaceSizeRatio(float newRatio) { sizeRatio = newRatio; }
+
 private:
 
     juce::AudioProcessorValueTreeState::ParameterLayout createParameters();
@@ -92,6 +95,7 @@ private:
 
     //==============================================================================
 
+    float sizeRatio = 1.0f;
     const double scopeSize = 0.5;
     Fifo<float> scopeData;
 
