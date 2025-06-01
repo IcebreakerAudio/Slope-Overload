@@ -1,4 +1,4 @@
-# Slope-Overload
+# Slope Overload
 __A DPCM LoFi Plugin Effect__
 
 ## About The Effect
