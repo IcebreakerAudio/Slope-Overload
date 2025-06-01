@@ -41,14 +41,14 @@ private:
         void paintButton(juce::Graphics& g, bool shouldDrawButtonAsHighlighted, bool shouldDrawButtonAsDown) override;
         int getIndex() { return index; }
 
-        void setShadowDistance(int newDistance) { shadowDistance = newDistance; }
+        void setShadowDistance(float newDistance) { shadowDistance = newDistance; }
 
         int getLength() { return juce::roundToInt(juce::TextLayout::getStringWidth(juce::Font(juce::FontOptions()), getButtonText())); }
 
     private:
 
         int index = 0;
-        int shadowDistance = 2;
+        float shadowDistance = 2.0f;
 
         JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(RadioButton)
     };

@@ -63,14 +63,14 @@ juce_add_plugin("${PROJECT_NAME}"
     NEEDS_MIDI_INPUT FALSE
 
     # VST3 Categories
-    # VST3_CATEGORIES Synth
+    VST3_CATEGORIES Fx
     )
 
 add_library(SharedCode INTERFACE)
 
 clap_juce_extensions_plugin(TARGET "${PROJECT_NAME}"
     CLAP_ID "${BUNDLE_ID}"
-    CLAP_FEATURES audio-effect distortion stereo)
+    CLAP_FEATURES audio-effect stereo)
 
 # Enable fast math, C++20 and a few other target defaults
 include(SharedCodeDefaults)

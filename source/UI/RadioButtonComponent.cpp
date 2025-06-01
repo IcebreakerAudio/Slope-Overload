@@ -130,7 +130,7 @@ void RadioButtonComponent::RadioButton::paintButton(juce::Graphics& g, bool shou
 {
     juce::ignoreUnused(shouldDrawButtonAsHighlighted, shouldDrawButtonAsDown);
 
-    auto bounds = getLocalBounds();
+    auto bounds = getLocalBounds().toFloat();
 
     juce::TextLayout layout;
     g.setFont(float(bounds.getHeight()) * 1.25f);

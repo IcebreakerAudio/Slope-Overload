@@ -35,7 +35,7 @@ juce::AudioProcessorValueTreeState::ParameterLayout AudioPluginAudioProcessor::c
     layout.add(std::make_unique<juce::AudioParameterFloat>(
                 juce::ParameterID{ "inGain", 1 },
                 "Input",
-                juce::NormalisableRange<float>(-60.0f, 12.0f, 0.01f, 1.5f),
+                juce::NormalisableRange<float>(-60.0f, 24.0f, 0.01f, 1.5f),
                 0.0f,
                 juce::AudioParameterFloatAttributes().withLabel("dB")
                 ));
