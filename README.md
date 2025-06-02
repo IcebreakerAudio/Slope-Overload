@@ -24,6 +24,8 @@ In order to make the effect more usable, pre and post filters were added, as wel
 
 I also added some small speaker impulse responses for added retro lofi nostalgia.
 
+You can watch a little video example [here](https://youtu.be/ZvAPi2aBVWY).
+
 ## Dependancies
 
 The effect was built using the [JUCE Framework](https://github.com/juce-framework/JUCE), which has been added to the git project as a submodule.
@@ -37,11 +39,11 @@ The UI uses two fonts which both have OLF licenses.
 __Slope Overload__ can be built using CMake.
 The CMake files were based off the [pamplejuce](https://github.com/sudara/pamplejuce) template, but simplified.
 
-Personally I use [Visual Studio Code](https://code.visualstudio.com/) for working on and building the project, but you can also build from the terminal if you have CMake installed.
+Personally I use [Visual Studio Code](https://code.visualstudio.com/) for working on and building the project, but you can also build from the terminal if you have CMake installed and set up for that.
 
 ## Install
 
-Pre-built binaries are included. You just need to place them in the correct directory (which are listed in the _ReadMe_ file in the download).
+Pre-built binaries are available [here](https://github.com/IcebreakerAudio/Slope-Overload/releases). You just need to place them in the correct directory (info is available on the release page).
 
 Note that Apple have a very heavy-handed security system that will probably block the plugins from being used. You will need to update the MacOS security features to either allow unsigned files, or to exclude the plugin files (the method for how to do this changes now and again, so Google for the latest technique).
 
