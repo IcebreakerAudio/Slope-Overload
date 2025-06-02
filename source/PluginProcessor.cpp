@@ -85,7 +85,6 @@ void AudioPluginAudioProcessor::prepareToPlay (double sampleRate, int samplesPer
     speaker.prepare(spec);
 
     auto latency = dpcm.getLatencyInSamples();
-    latency += speaker.getLatency();
     setLatencySamples(latency);
 
     bypassDelay.prepare(spec);
@@ -120,7 +119,7 @@ bool AudioPluginAudioProcessor::isBusesLayoutSupported (const BusesLayout& layou
 void AudioPluginAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer,
                                               juce::MidiBuffer& midiMessages)
 {
-    if(!prepared) {
+    if(!prepared || mixer == nullptr) {
         return;
     }
 
@@ -146,11 +145,11 @@ void AudioPluginAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer,
     for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
         buffer.clear (i, 0, buffer.getNumSamples());
 
-    mixer->pushDrySamples(buffer);
-
-    smInGain.applyGain(buffer, numSamples);
     auto block = juce::dsp::AudioBlock<float>(buffer).getSubsetChannelBlock(0, totalNumInputChannels);
     auto context = juce::dsp::ProcessContextReplacing<float>(block);
+
+    mixer->pushDrySamples(block);
+    smInGain.applyGain(buffer, numSamples);
 
     dpcm.process(context);
 
@@ -173,6 +172,10 @@ void AudioPluginAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer,
     }
 
     mixer->mixWetSamples(block);
+
+    if(totalNumInputChannels < totalNumOutputChannels) {
+        buffer.copyFrom(1, 0, buffer, 0, 0, numSamples);
+    }
 
     if(effectActive) {
         scopeData.addToFifo(buffer, totalNumInputChannels);
@@ -205,6 +208,12 @@ void AudioPluginAudioProcessor::processBlockBypassed (juce::AudioBuffer<float>& 
 
 void AudioPluginAudioProcessor::updateMainParameters()
 {
+    jassert(mixer);
+
+    if(mixer == nullptr) {
+        return;
+    }
+
     effectActive = loadRawParameterValue("active") > 0.5f;
     mixer->setWetMixProportion(effectActive ? 1.0f : 0.0f); // using mixer for bypass to avoid clicks
 
