@@ -16,18 +16,20 @@ public:
     DeltaModulation();
 
     //==============================================================================
-    /** Sets the threshold in dB of the noise-gate.*/
+    /** Sets the Sample Rate index (values 0-15 accepted)*/
     void setSampleRate (int sampleRateIndex);
     
-    /** Sets the threshold in dB of the noise-gate.*/
+    /** Sets the system to use (PAL or NTSC)*/
     void setSystem (System systemToUse);
 
-    /** Sets the ratio of the noise-gate (must be higher or equal to 1).*/
+    /** Sets whether filtering should be applied before and after re-sampling to reduce aliasing*/
     void setAntiAliasing (bool shouldUseAntiAliasing);
 
     //==============================================================================
+    /** Returns the number of available sample rates to be used with setSampleRate()*/
     int getNumSampleRates() const { return 16; }
 
+    /** Returns the latency produced by the module. Call this after prepare(). Latency may be 0 at higher sample rates.*/
     int getLatencyInSamples() const { return juce::roundToInt(overSampler.getLatencyInSamples()); }
 
     //==============================================================================
