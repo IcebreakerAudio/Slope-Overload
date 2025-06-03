@@ -16,7 +16,7 @@ Because of how the encoding works, curves in the waveform get distorted into str
 
 ![Slope Overload](examples/Screenshot.png)
 
-Out of the box __Slope Overload__ supports VST3, CLAP, and AU for both Windows and MacOS.
+Out of the box __Slope Overload__ supports VST3, CLAP, LV2, and AU for both Windows, MacOS and Linux.
 
 The UI uses 100% vector graphics and so can be resized freely.
 
