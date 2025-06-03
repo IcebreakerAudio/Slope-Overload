@@ -18,7 +18,7 @@ set(COMPANY_NAME "Icebreaker Audio")
 set(BUNDLE_ID "com.icebreakeraudio.slopeoverload")
 
 # Options: AAX Unity VST VST3 AU AUv3 Standalone
-set(FORMATS Standalone AU VST3)
+set(FORMATS Standalone AU VST3 LV2)
 
 # The top-level CMakeLists.txt file for a project must contain a literal, direct call to the
 # `project()` command. `project()` sets up some helpful variables that describe source/binary
@@ -27,7 +27,7 @@ set(FORMATS Standalone AU VST3)
 project(${PROJECT_NAME} VERSION ${CURRENT_VERSION})
 
 add_subdirectory(JUCE)
-add_subdirectory(libs/clap-juce-extensions EXCLUDE_FROM_ALL) 
+add_subdirectory(libs/clap-juce-extensions EXCLUDE_FROM_ALL)
 
 # `juce_add_plugin` adds a static library target with the name passed as the first argument
 # (AudioPluginExample here). This target is a normal CMake target, but has a lot of extra properties set
@@ -55,7 +55,7 @@ juce_add_plugin("${PROJECT_NAME}"
 
     # You might want to use v${MAJOR_VERSION} here once you go to v2...
     PRODUCT_NAME "${PRODUCT_NAME}"
-    
+
     # Is it a synth?
     IS_SYNTH FALSE
 
@@ -64,6 +64,9 @@ juce_add_plugin("${PROJECT_NAME}"
 
     # VST3 Categories
     VST3_CATEGORIES Fx
+
+    # LV2 URI
+    LV2URI "urn://${BUNDLE_ID}"
     )
 
 add_library(SharedCode INTERFACE)
