@@ -1,7 +1,7 @@
 #pragma once
 #include <juce_dsp/juce_dsp.h>
 #include <numbers>
-#include "OnePoleEQFilter.h"
+#include <IA_Filters/EQ/OnePoleEQFilter.hpp>
 
 template <typename SampleType>
 class DeltaModulation
@@ -180,7 +180,7 @@ private:
     const SampleType threshold = static_cast<SampleType>(1.0) / bitFactor;
     const SampleType gateRatio = static_cast<SampleType>(50.0);
 
-    OnePoleEQFilter<SampleType> highBoost { OnePoleEQFilterMode::HighPass };
+    IADSP::OnePoleEQFilter<SampleType> highBoost { IADSP::OnePoleEQFilterMode::HighPass };
     std::vector<juce::dsp::StateVariableTPTFilter<SampleType>> aaFilters;
     juce::dsp::StateVariableTPTFilter<SampleType> postFilter;
     juce::dsp::Oversampling<SampleType> overSampler;

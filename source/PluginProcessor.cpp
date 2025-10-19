@@ -1,6 +1,6 @@
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
-#include "DSP/BasicClippers.h"
+#include <IA_Waveshaping/BasicClippers.hpp>
 
 //==============================================================================
 AudioPluginAudioProcessor::AudioPluginAudioProcessor()
@@ -162,7 +162,7 @@ void AudioPluginAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer,
             auto data = block.getChannelPointer(c);
             for(int s = 0; s < numSamples; ++s)
             {
-                data[s] = BasicClippers::softClip(data[s]);
+                data[s] = IADSP::BasicClippers::cubicSoftClip(data[s]);
             }
         }
     }

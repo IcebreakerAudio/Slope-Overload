@@ -4,8 +4,8 @@
 #include <juce_dsp/juce_dsp.h>
 #include <BinaryData.h>
 #include "DSP/DeltaModulation.h"
-#include "Utilities/ParameterListener.h"
-#include "Utilities/FiFo.h"
+#include <IA_Utilities/ParameterListener.hpp>
+#include <IA_Utilities/FiFo.hpp>
 
 //==============================================================================
 class AudioPluginAudioProcessor final : public juce::AudioProcessor
