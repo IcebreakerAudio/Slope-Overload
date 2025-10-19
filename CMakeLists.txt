@@ -28,6 +28,7 @@ project(${PROJECT_NAME} VERSION ${CURRENT_VERSION})
 
 add_subdirectory(JUCE)
 add_subdirectory(libs/clap-juce-extensions EXCLUDE_FROM_ALL)
+add_subdirectory(libs/IADSP)
 
 # `juce_add_plugin` adds a static library target with the name passed as the first argument
 # (AudioPluginExample here). This target is a normal CMake target, but has a lot of extra properties set
@@ -107,6 +108,7 @@ target_compile_definitions(SharedCode
 
 target_link_libraries(SharedCode
     INTERFACE
+    IADSP
     Assets
     juce_audio_utils
     juce_audio_processors

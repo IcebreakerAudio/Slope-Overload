@@ -67,7 +67,7 @@ void PixelScope::setSizeRatio(float newSizeRatio)
 PixelScope::PixelScopeBackground::PixelScopeBackground(int numPixelsX, int numPixelsY, float pixelSize)
     : pxX(numPixelsX), pxY(numPixelsY), pxSize(pixelSize)
 {
-
+    setBufferedToImage(true);
 }
 
 void PixelScope::PixelScopeBackground::paint (juce::Graphics& g)

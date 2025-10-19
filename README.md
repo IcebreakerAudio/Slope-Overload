@@ -16,7 +16,7 @@ Because of how the encoding works, curves in the waveform get distorted into str
 
 ![Slope Overload](examples/Screenshot.png)
 
-Out of the box __Slope Overload__ supports VST3, CLAP, LV2, and AU for both Windows, MacOS and Linux.
+Out of the box __Slope Overload__ supports VST3, CLAP, LV2, and AU for Windows, MacOS and Linux.
 
 The UI uses 100% vector graphics and so can be resized freely.
 
@@ -30,7 +30,7 @@ You can watch a little video example [here](https://youtu.be/ZvAPi2aBVWY).
 
 The effect was built using the [JUCE Framework](https://github.com/juce-framework/JUCE), which has been added to the git project as a submodule.
 Likewise the CLAP format support is added using the [clap juce extensions](https://github.com/free-audio/clap-juce-extensions) library (also added as a submodule).
-When JUCE officially support CLAP, I'll update that part of the codebase.
+*When JUCE officially support CLAP, I'll update that part of the codebase.*
 
 The UI uses two fonts which both have OLF licenses.
 

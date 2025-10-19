@@ -5,3 +5,7 @@
 	path = libs/clap-juce-extensions
 	url = https://github.com/free-audio/clap-juce-extensions.git
 	branch = main
+[submodule "libs/IADSP"]
+	path = libs/IADSP
+	url = https://github.com/IcebreakerAudio/IADSP.git
+	branch = main
