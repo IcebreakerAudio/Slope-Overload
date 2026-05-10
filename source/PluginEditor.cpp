@@ -27,6 +27,7 @@ AudioPluginAudioProcessorEditor::AudioPluginAudioProcessorEditor (AudioPluginAud
 
     // load background svg
     background = juce::Drawable::createFromImageData(BinaryData::Background_svg, BinaryData::Background_svgSize);
+    addAndMakeVisible(background.get());
 
     // create labels
     for(auto& details : labelDetails)
@@ -170,13 +171,12 @@ void AudioPluginAudioProcessorEditor::timerCallback()
 //==============================================================================
 void AudioPluginAudioProcessorEditor::paint (juce::Graphics& g)
 {
-    g.fillAll (juce::Colours::black);
-    background->drawWithin(g, getLocalBounds().toFloat(), juce::RectanglePlacement::fillDestination, 1.0f);
 }
 
 void AudioPluginAudioProcessorEditor::resized()
 {
     auto bounds = getLocalBounds().toFloat();
+    background->setTransformToFit(bounds, juce::RectanglePlacement::fillDestination);
     auto sizeRatio = bounds.getWidth() / originalWidthF;
 
     processorRef.setInterfaceSizeRatio(sizeRatio);

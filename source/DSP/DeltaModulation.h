@@ -106,7 +106,8 @@ public:
             auto* outputSamples = outputBlock.getChannelPointer (channel);
 
             for (size_t i = 0; i < numSamples; ++i) {
-                outputSamples[i] = dcPostFilter.processSample ((int) channel, outputSamples[i]); }
+                outputSamples[i] = dcPostFilter.processSample ((int) channel, outputSamples[i]);
+            }
         }
 
         for(auto& f : aaFilters) {
