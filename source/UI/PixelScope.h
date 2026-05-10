@@ -13,7 +13,7 @@ public:
     void setDataAt(int index, float minValue, float maxValue);
     void setSizeRatio(float newSizeRatio);
 
-    constexpr int getDataSize() { return pixelsX; }
+    constexpr int getDataSize() const { return pixelsX; }
 
 private:
 
@@ -22,12 +22,11 @@ private:
     static constexpr float pixelsYfloat = static_cast<float>(pixelsY);
 
     float pixelSize = 4.0f;
-    float shadowDistance = 2.0f;
 
     std::vector<float> dataMin;
     std::vector<float> dataMax;
 
-    float normalizeValue(float in)
+    static float normalizeValue(float in)
     {
         in = (in * 0.5f) + 0.5f;
         in = 1.0f - in;
@@ -48,7 +47,7 @@ private:
 
     private:
 
-        int pxX = 60, pxY = 19;
+        int pxX = 60, pxY = 18;
         float pxSize = 4.0f, pxOffset = 2.0f;
     };
 

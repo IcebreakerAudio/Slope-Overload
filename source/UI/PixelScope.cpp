@@ -10,9 +10,7 @@ PixelScope::PixelScope()
 
 void PixelScope::paint (juce::Graphics& g)
 {
-    if(dataMin.empty() || dataMax.empty()) {
-        return;
-    }
+    jassert(!dataMin.empty() && !dataMax.empty());
 
     g.setColour(juce::Colour(0xFF2A2E0D));
 
@@ -51,8 +49,8 @@ void PixelScope::setDataAt(int index, float minValue, float maxValue)
     minValue = normalizeValue(minValue);
     maxValue = normalizeValue(maxValue);
 
-    dataMin[index] = round(minValue * pixelsYfloat) / pixelsYfloat;
-    dataMax[index] = round(maxValue * pixelsYfloat) / pixelsYfloat;
+    dataMin[index] = std::round(minValue * pixelsYfloat) / pixelsYfloat;
+    dataMax[index] = std::round(maxValue * pixelsYfloat) / pixelsYfloat;
 }
 
 void PixelScope::setSizeRatio(float newSizeRatio)
@@ -82,8 +80,8 @@ void PixelScope::PixelScopeBackground::paint (juce::Graphics& g)
     {
         for(int y = 0; y < pxY; ++y)
         {
-            g.fillRect( (x * width / pixelsX) + pxOffset,
-                        (y * height / pixelsY) + pxOffset,
+            g.fillRect( (x * width / pxX) + pxOffset,
+                        (y * height / pxY) + pxOffset,
                         pxSize, pxSize
             );
         }

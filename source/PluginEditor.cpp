@@ -160,7 +160,7 @@ void AudioPluginAudioProcessorEditor::timerCallback()
                 scopeIdx++;
             }
             if(scopeIdx >= scopeSize) {
-                i = numSamples; 
+                break;
             }
         }
 
@@ -169,7 +169,7 @@ void AudioPluginAudioProcessorEditor::timerCallback()
 }
 
 //==============================================================================
-void AudioPluginAudioProcessorEditor::paint (juce::Graphics& g)
+void AudioPluginAudioProcessorEditor::paint (juce::Graphics& /*g*/)
 {
 }
 
