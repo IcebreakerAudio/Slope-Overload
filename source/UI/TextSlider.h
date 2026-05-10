@@ -1,7 +1,6 @@
 #pragma once
 
 #include <juce_gui_basics/juce_gui_basics.h>
-#include <BinaryData.h>
 
 class TextSlider : public juce::Slider
 {
@@ -23,6 +22,8 @@ private:
 
     float offset = 2.0f;
     float fontHeight = 32.0f;
+
+    juce::Typeface::Ptr digitalTypeface;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (TextSlider)
 

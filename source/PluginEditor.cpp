@@ -32,16 +32,14 @@ AudioPluginAudioProcessorEditor::AudioPluginAudioProcessorEditor (AudioPluginAud
     // create labels
     for(auto& details : labelDetails)
     {
-        auto s = labels.emplace_back(std::make_shared<juce::Label>(details.text, details.text));
-        addAndMakeVisible(s.get());
-        s->setJustificationType(details.justification);
-        s->setColour(juce::Label::ColourIds::textColourId, juce::Colours::black.withAlpha(0.125f));
-        details.shadow_ptr = s;
+        details.shadow = std::make_unique<juce::Label>(details.text, details.text);
+        addAndMakeVisible(details.shadow.get());
+        details.shadow->setJustificationType(details.justification);
+        details.shadow->setColour(juce::Label::ColourIds::textColourId, juce::Colours::black.withAlpha(0.125f));
 
-        auto& l = labels.emplace_back(std::make_shared<juce::Label>(details.text, details.text));
-        addAndMakeVisible(l.get());
-        l->setJustificationType(details.justification);
-        details.label_ptr = l;
+        details.label = std::make_unique<juce::Label>(details.text, details.text);
+        addAndMakeVisible(details.label.get());
+        details.label->setJustificationType(details.justification);
     }
 
     // In and Out Gain
@@ -132,7 +130,7 @@ void AudioPluginAudioProcessorEditor::timerCallback()
     else
     {
         auto numSamples = processorRef.getScopeNumSamplesToRead();
-        processorRef.readScopeData(scopeDataRaw.data(), (int)scopeDataRaw.size());
+        processorRef.readScopeData(scopeDataRaw.data(), static_cast<int>(scopeDataRaw.size()));
 
         const auto scopeSize = scope.getDataSize();
         const auto samplesPerPixel = numSamples / scopeSize;
@@ -169,10 +167,6 @@ void AudioPluginAudioProcessorEditor::timerCallback()
 }
 
 //==============================================================================
-void AudioPluginAudioProcessorEditor::paint (juce::Graphics& /*g*/)
-{
-}
-
 void AudioPluginAudioProcessorEditor::resized()
 {
     auto bounds = getLocalBounds().toFloat();
@@ -189,23 +183,15 @@ void AudioPluginAudioProcessorEditor::resized()
 
     for(auto& details : labelDetails)
     {
-        auto s = details.shadow_ptr.lock();
-        if(s)
-        {
-            s->setBounds(juce::roundToInt((details.posX * sizeRatio) + shadowDistance),
-                         juce::roundToInt((details.posY * sizeRatio) + shadowDistance),
-                         labelWidth, labelHeight);
-            s->setFont(labelFont);
-        }
+        details.shadow->setBounds(juce::roundToInt((details.posX * sizeRatio) + shadowDistance),
+                                  juce::roundToInt((details.posY * sizeRatio) + shadowDistance),
+                                  labelWidth, labelHeight);
+        details.shadow->setFont(labelFont);
 
-        auto l = details.label_ptr.lock();
-        if(l)
-        {
-            l->setBounds(juce::roundToInt(details.posX * sizeRatio),
-                         juce::roundToInt(details.posY * sizeRatio),
-                         labelWidth, labelHeight);
-            l->setFont(labelFont);
-        }
+        details.label->setBounds(juce::roundToInt(details.posX * sizeRatio),
+                                 juce::roundToInt(details.posY * sizeRatio),
+                                 labelWidth, labelHeight);
+        details.label->setFont(labelFont);
     }
 
     powerButton->setBounds(juce::roundToInt(36.0f * sizeRatio),

@@ -15,7 +15,6 @@ public:
     ~AudioPluginAudioProcessorEditor() override;
 
     //==============================================================================
-    void paint (juce::Graphics&) override;
     void resized() override;
 
     //==============================================================================
@@ -29,32 +28,32 @@ private:
 
     //==============================================================================
 
-    const int originalWidth = 715;
-    const int originalHeight = 460;
+    static constexpr int originalWidth = 715;
+    static constexpr int originalHeight = 460;
 
-    const float originalWidthF = static_cast<float>(originalWidth);
-    const float originalHeightF = static_cast<float>(originalHeight);
+    static constexpr float originalWidthF = static_cast<float>(originalWidth);
+    static constexpr float originalHeightF = static_cast<float>(originalHeight);
 
     //==============================================================================
 
-    struct LabelDetails
+    struct LabelWithDetails
     {
         juce::String text;
         float posX;
         float posY;
         juce::Justification justification;
 
-        std::weak_ptr<juce::Label> label_ptr;
-        std::weak_ptr<juce::Label> shadow_ptr;
+        std::unique_ptr<juce::Label> shadow;
+        std::unique_ptr<juce::Label> label;
     };
 
-    std::array<LabelDetails, 5> labelDetails
+    std::array<LabelWithDetails, 5> labelDetails
     {
-        LabelDetails{"IN:", 144.0f, 82.0f, juce::Justification::centredLeft},
-        LabelDetails{"OUT:", 478.0f, 82.0f, juce::Justification::centredLeft},
-        LabelDetails{"FILTER", 144.0f, 295.0f, juce::Justification::centred},
-        LabelDetails{"S.RATE", 311.0f, 295.0f, juce::Justification::centred},
-        LabelDetails{"SPEAKER", 484.0f, 295.0f, juce::Justification::centred}
+        LabelWithDetails{"IN:", 144.0f, 82.0f, juce::Justification::centredLeft},
+        LabelWithDetails{"OUT:", 478.0f, 82.0f, juce::Justification::centredLeft},
+        LabelWithDetails{"FILTER", 144.0f, 295.0f, juce::Justification::centred},
+        LabelWithDetails{"S.RATE", 311.0f, 295.0f, juce::Justification::centred},
+        LabelWithDetails{"SPEAKER", 484.0f, 295.0f, juce::Justification::centred}
     };
 
     //==============================================================================
@@ -62,8 +61,6 @@ private:
     std::unique_ptr<juce::Drawable> background;
 
     PixelScope scope;
-
-    std::vector<std::shared_ptr<juce::Label>> labels;
 
     std::unique_ptr<TextSlider> inGainSlider, outGainSlider, sampleRateSlider;
     std::unique_ptr<juce::SliderParameterAttachment> inGainAttachment, outGainAttachment, sampleRateAttachment;

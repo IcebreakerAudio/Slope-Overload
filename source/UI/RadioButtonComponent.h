@@ -16,8 +16,8 @@ public:
     void resized() override;
 
     void setSelectedItemIndex(int itemIndex);
-    int getSelectedItemIndex() { return selectedItemIndex; }
-    int getNumItems() { return numItems; }
+    int getSelectedItemIndex() const { return selectedItemIndex; }
+    int getNumItems() const { return numItems; }
 
     void setShadowDistance(float newDistance);
 
@@ -36,14 +36,14 @@ private:
     public:
 
         RadioButton(int indexValue, juce::StringRef displayText, juce::StringRef itemTip = "");
-        ~RadioButton() {};
+        ~RadioButton() override = default;
 
         void paintButton(juce::Graphics& g, bool shouldDrawButtonAsHighlighted, bool shouldDrawButtonAsDown) override;
-        int getIndex() { return index; }
+        int getIndex() const { return index; }
 
         void setShadowDistance(float newDistance) { shadowDistance = newDistance; }
 
-        int getLength() { return juce::roundToInt(juce::TextLayout::getStringWidth(juce::Font(juce::FontOptions()), getButtonText())); }
+        int getLength() const { return juce::roundToInt(juce::TextLayout::getStringWidth(juce::Font(juce::FontOptions()), getButtonText())); }
 
     private:
 
@@ -56,7 +56,7 @@ private:
     juce::Value selectedItemValue { -1 };
     int numItems = 0, selectedItemIndex = -1;
     juce::OwnedArray<RadioButton> items;
-    juce::OwnedArray<juce::Rectangle<int>> dividers;
+    juce::Array<juce::Rectangle<int>> dividers;
     juce::String dividerText;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (RadioButtonComponent)

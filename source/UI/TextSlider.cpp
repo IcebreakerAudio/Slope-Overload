@@ -1,9 +1,14 @@
 #include "TextSlider.h"
+#include <BinaryData.h>
 
 TextSlider::TextSlider()
 {
     setSliderStyle(juce::Slider::SliderStyle::RotaryVerticalDrag);
     setTextBoxStyle(juce::Slider::TextEntryBoxPosition::NoTextBox, true, 1, 1);
+
+    digitalTypeface = juce::Typeface::createSystemTypefaceFor(
+        BinaryData::DigitalNumbersRegular_ttf,
+        BinaryData::DigitalNumbersRegular_ttfSize);
 }
 
 void TextSlider::paint (juce::Graphics& g)
@@ -19,8 +24,7 @@ void TextSlider::paint (juce::Graphics& g)
     {
         bgText = "88";
 
-        auto font = juce::Font(juce::FontOptions(juce::Typeface::createSystemTypefaceFor(BinaryData::DigitalNumbersRegular_ttf, BinaryData::DigitalNumbersRegular_ttfSize)));
-        g.setFont(font.withPointHeight(fontHeight));
+        g.setFont(juce::Font(juce::FontOptions(digitalTypeface)).withPointHeight(fontHeight));
     }
     else
     {
@@ -38,7 +42,7 @@ void TextSlider::paint (juce::Graphics& g)
     }
 
     g.setColour(getLookAndFeel().findColour(juce::Slider::ColourIds::backgroundColourId));
-    g.drawText(bgText, bounds.withX(offset).withY(offset), juce::Justification::centredRight, false);
+    g.drawText(bgText, bounds.translated(offset, offset), juce::Justification::centredRight, false);
 
     g.setColour(getLookAndFeel().findColour(juce::Slider::ColourIds::textBoxTextColourId));
     g.drawText(text, bounds, juce::Justification::centredRight, false);

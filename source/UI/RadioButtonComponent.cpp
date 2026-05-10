@@ -26,7 +26,7 @@ void RadioButtonComponent::paint (juce::Graphics& g)
     g.setFont(getLocalBounds().toFloat().getHeight() * 1.1f);
 
     for(auto& d : dividers) {
-        g.drawFittedText(dividerText, *d, juce::Justification::centred, 1, 1.0f);
+        g.drawFittedText(dividerText, d, juce::Justification::centred, 1, 1.0f);
     }
 }
 
@@ -43,9 +43,10 @@ void RadioButtonComponent::resized()
         totalTextLength += i->getLength();
     }
 
-    auto dividerWidth = juce::roundToInt(juce::TextLayout::getStringWidth(juce::Font(juce::FontOptions()), dividerText));
+    int dividerWidth = 0;
     if(dividerText.isNotEmpty())
     {
+        dividerWidth = juce::roundToInt(juce::TextLayout::getStringWidth(juce::Font(juce::FontOptions()), dividerText));
         dividers.clear();
         totalTextLength += dividerWidth * (numItems - 1);
     }
@@ -57,7 +58,7 @@ void RadioButtonComponent::resized()
         items[i]->setBounds(bounds.removeFromLeft((width * items[i]->getLength()) / totalTextLength));
         if(dividerText.isNotEmpty() && i != numItems - 1)
         {
-            dividers.add(new juce::Rectangle<int>(bounds.removeFromLeft((width * dividerWidth) / totalTextLength)));
+            dividers.add(bounds.removeFromLeft((width * dividerWidth) / totalTextLength));
         }
     }
 
@@ -74,7 +75,7 @@ void RadioButtonComponent::setShadowDistance(float newDistance)
 void RadioButtonComponent::setSelectedItemIndex(int itemIndex)
 {
     jassert(juce::isPositiveAndBelow(itemIndex, numItems));
-    itemIndex = juce::jlimit(0, numItems, itemIndex);
+    itemIndex = juce::jlimit(0, numItems - 1, itemIndex);
 
     for (auto i : items)
     {
@@ -109,7 +110,7 @@ RadioButtonComponent::RadioButton::RadioButton(int indexValue, juce::StringRef d
       index(indexValue)
 {
     setButtonText(displayText);
-    onClick = [&]()
+    onClick = [this]()
         {
             auto p = getParentComponent();
             jassert(p != nullptr);
@@ -129,11 +130,10 @@ void RadioButtonComponent::RadioButton::paintButton(juce::Graphics& g, bool shou
 
     auto bounds = getLocalBounds().toFloat();
 
-    juce::TextLayout layout;
     g.setFont(float(bounds.getHeight()) * 1.25f);
 
     g.setColour(getLookAndFeel().findColour(juce::TextButton::ColourIds::buttonColourId));
-    g.drawText(getButtonText(), bounds.withX(shadowDistance).withY(shadowDistance), juce::Justification::centred, false);
+    g.drawText(getButtonText(), bounds.translated(shadowDistance, shadowDistance), juce::Justification::centred, false);
 
     const auto state = getToggleState();
     if(state)
