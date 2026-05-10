@@ -99,7 +99,7 @@ target_compile_definitions(SharedCode
     # JUCE_DISPLAY_SPLASH_SCREEN=0
 
     # lets the app known if we're Debug or Release
-    CMAKE_BUILD_TYPE="${CMAKE_BUILD_TYPE}"
+    CMAKE_BUILD_TYPE="$<CONFIG>"
     VERSION="${CURRENT_VERSION}"
 
     # JucePlugin_Name is for some reason doesn't use the nicer PRODUCT_NAME
