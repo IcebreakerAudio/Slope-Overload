@@ -27,7 +27,7 @@ public:
 
     //==============================================================================
     /** Returns the number of available sample rates to be used with setSampleRate()*/
-    int getNumSampleRates() const { return 16; }
+    int getNumSampleRates() const { return static_cast<int>(srLookupPAL.size()); }
 
     /** Returns the latency produced by the module. Call this after prepare(). Latency may be 0 at higher sample rates.*/
     int getLatencyInSamples() const { return juce::roundToInt(overSampler.getLatencyInSamples()); }
@@ -125,9 +125,9 @@ private:
     SampleType processSample (int channel, SampleType inputValue);
 
     static constexpr double targetSampleRate = 133000.0;
-    static constexpr SampleType numBits = 7.0;
-    const SampleType bitDepth = static_cast<SampleType>(std::pow(2.0, 7.0) - 1.0);
-    const SampleType bitFactor = bitDepth * static_cast<SampleType>(0.5);
+    static constexpr int numBits             = 7;
+    static constexpr SampleType bitDepth     = static_cast<SampleType>((1 << numBits) - 1);
+    static constexpr SampleType bitFactor    = bitDepth * static_cast<SampleType>(0.5);
 
     static constexpr std::array<double, 16> srLookupPAL
     {
@@ -178,8 +178,8 @@ private:
     int channels = 1;
     static constexpr int numFilters = 4;
 
-    const SampleType threshold = static_cast<SampleType>(1.0) / bitFactor;
-    const SampleType gateRatio = static_cast<SampleType>(50.0);
+    static constexpr SampleType threshold = static_cast<SampleType>(1.0) / bitFactor;
+    static constexpr SampleType gateRatio = static_cast<SampleType>(50.0);
 
     IADSP::OnePoleEQFilter<SampleType> highBoost { IADSP::OnePoleEQFilterMode::HighPass };
     std::vector<juce::dsp::StateVariableTPTFilter<SampleType>> aaFilters;

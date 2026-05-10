@@ -18,6 +18,8 @@ DeltaModulation<SampleType>::DeltaModulation()
 
     highBoost.setFrequency(static_cast<SampleType>(1000.0));
     highBoost.setGainDB(static_cast<SampleType>(6.0));
+
+    DBG(bitDepth); // test after lunch
 }
 
 template <typename SampleType>
@@ -90,7 +92,7 @@ void DeltaModulation<SampleType>::reset()
 {
     std::fill(z1.begin(), z1.end(), static_cast<SampleType>(63.0));
     std::fill(output.begin(), output.end(), static_cast<SampleType>(0.0));
-    std::fill(clockPhase.begin(), clockPhase.end(), static_cast<SampleType>(1.0));
+    std::fill(clockPhase.begin(), clockPhase.end(), 1.0);
 
     for(auto& f : aaFilters) {
         f.reset();
@@ -99,6 +101,9 @@ void DeltaModulation<SampleType>::reset()
 
     RMSFilter.reset();
     envelopeFilter.reset();
+    dcPreFilter.reset();
+    dcPostFilter.reset();
+    highBoost.reset();
 }
 
 template <typename SampleType>
@@ -125,9 +130,9 @@ SampleType DeltaModulation<SampleType>::processSample (int channel, SampleType i
 
         auto x = inputValue * bitFactor;
         x += bitFactor;
-        juce::jlimit(static_cast<SampleType>(0.0), bitDepth, x);
+        x = juce::jlimit(static_cast<SampleType>(0.0), bitDepth, x);
 
-        x = round(x) > z1[channel] ? static_cast<SampleType>(1.0) : static_cast<SampleType>(-1.0);
+        x = std::round(x) > z1[channel] ? static_cast<SampleType>(1.0) : static_cast<SampleType>(-1.0);
         x += z1[channel];
 
         z1[channel] = x;
