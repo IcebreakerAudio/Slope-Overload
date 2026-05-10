@@ -110,10 +110,12 @@ public:
             }
         }
 
-        for(auto& f : aaFilters) {
-            f.snapToZero();
+        if(antiAliasing) {
+            for(auto& f : aaFilters) {
+                f.snapToZero();
+            }
+            postFilter.snapToZero();
         }
-        postFilter.snapToZero();
         dcPreFilter.snapToZero();
         dcPostFilter.snapToZero();
     }

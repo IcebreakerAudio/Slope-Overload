@@ -163,7 +163,6 @@ void AudioPluginAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer,
     if(speakerActive)
     {
         speaker.process(context);
-        smOutGain.applyGain(buffer, numSamples);
         for(int c = 0; c < totalNumInputChannels; ++c)
         {
             auto data = block.getChannelPointer(c);
@@ -173,10 +172,8 @@ void AudioPluginAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer,
             }
         }
     }
-    else
-    {
-        smOutGain.applyGain(buffer, numSamples);
-    }
+
+    smOutGain.applyGain(buffer, numSamples);
 
     mixer->mixWetSamples(block);
 

@@ -14,17 +14,13 @@ void PixelScope::paint (juce::Graphics& g)
 
     g.setColour(juce::Colour(0xFF2A2E0D));
 
-    auto bounds = getLocalBounds().toFloat();
-    auto width = bounds.getWidth();
-    auto height = bounds.getHeight();
-
     for(int i = 0; i < pixelsX; ++i)
     {
         auto yPos = dataMax[i];
         do
         {
-            g.fillRect(i * width / pixelsX,
-                    yPos * height,
+            g.fillRect(i * cachedColW,
+                    yPos * cachedH,
                     pixelSize, pixelSize
             );
             yPos += 1.0f / pixelsYfloat;
@@ -35,6 +31,8 @@ void PixelScope::paint (juce::Graphics& g)
 void PixelScope::resized()
 {
     background.setBounds(getLocalBounds());
+    cachedColW = float(getWidth()) / float(pixelsX);
+    cachedH    = float(getHeight());
 }
 
 void PixelScope::setDataAt(int index, float minValue, float maxValue)

@@ -19,7 +19,6 @@ DeltaModulation<SampleType>::DeltaModulation()
     highBoost.setFrequency(static_cast<SampleType>(1000.0));
     highBoost.setGainDB(static_cast<SampleType>(6.0));
 
-    DBG(bitDepth); // test after lunch
 }
 
 template <typename SampleType>

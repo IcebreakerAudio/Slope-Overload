@@ -22,6 +22,8 @@ private:
     static constexpr float pixelsYfloat = static_cast<float>(pixelsY);
 
     float pixelSize = 4.0f;
+    float cachedColW = 0.0f;
+    float cachedH    = 0.0f;
 
     std::vector<float> dataMin;
     std::vector<float> dataMax;
