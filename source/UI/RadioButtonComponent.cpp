@@ -50,9 +50,6 @@ void RadioButtonComponent::resized()
         totalTextLength += dividerWidth * (numItems - 1);
     }
 
-    DBG("Total Length:");
-    DBG(totalTextLength);
-
     auto width = bounds.getWidth();
 
     for(int i = 0; i < numItems; ++i)
