@@ -2,7 +2,6 @@
 
 #include <juce_audio_processors/juce_audio_processors.h>
 #include <juce_dsp/juce_dsp.h>
-#include <BinaryData.h>
 #include "DSP/DeltaModulation.h"
 #include <IA_Utilities/ParameterListener.hpp>
 #include <IA_Utilities/FiFo.hpp>
@@ -96,7 +95,7 @@ private:
     //==============================================================================
 
     float sizeRatio = 1.0f;
-    const double scopeSize = 0.5;
+    static constexpr double scopeSize = 0.5;
     Fifo<float> scopeData;
 
     //==============================================================================

@@ -1,5 +1,6 @@
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
+#include <BinaryData.h>
 #include <IA_Waveshaping/BasicClippers.hpp>
 
 //==============================================================================
@@ -21,6 +22,12 @@ AudioPluginAudioProcessor::AudioPluginAudioProcessor()
 
 AudioPluginAudioProcessor::~AudioPluginAudioProcessor()
 {
+    apvts.removeParameterListener("active", &mainControlListener);
+    apvts.removeParameterListener("inGain", &mainControlListener);
+    apvts.removeParameterListener("outGain", &mainControlListener);
+    apvts.removeParameterListener("sRate", &dpcmControlListener);
+    apvts.removeParameterListener("aaFilt", &dpcmControlListener);
+    apvts.removeParameterListener("speaker", &speakerListener);
 }
 
 juce::AudioProcessorValueTreeState::ParameterLayout AudioPluginAudioProcessor::createParameters()
@@ -283,6 +290,9 @@ void AudioPluginAudioProcessor::setStateInformation (const void* data, int sizeI
 {
     // Restore
     auto xml = getXmlFromBinary(data, sizeInBytes);
+    if(xml == nullptr) {
+        return;
+    }
     sizeRatio = static_cast<float>(xml->getDoubleAttribute("SizeRatio", 1.0));
     xml->removeAttribute("SizeRatio");
     auto copyState = juce::ValueTree::fromXml(*xml.get());
@@ -306,7 +316,6 @@ bool AudioPluginAudioProcessor::hasEditor() const
 juce::AudioProcessorEditor* AudioPluginAudioProcessor::createEditor()
 {
     return new AudioPluginAudioProcessorEditor (*this);
-    //return new juce::GenericAudioProcessorEditor(*this);
 }
 
 //==============================================================================
